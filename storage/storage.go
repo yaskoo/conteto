@@ -22,7 +22,6 @@ func Save(r io.Reader, w io.Writer) error {
 	fr := proto.NewReader(r)
 
 	_, err = io.Copy(file, fr)
-	println("after copy")
 
 	binary.Write(w, binary.BigEndian, proto.Ok)
 	return err

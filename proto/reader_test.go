@@ -3,36 +3,37 @@ package proto
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"io"
-	_ "os"
 	"testing"
 )
 
 func TestReader(t *testing.T) {
-	// src, _ := os.Open("./common.go")
 	src := new(bytes.Buffer)
 	write_test_data(src)
 
 	dest := new(bytes.Buffer)
 
-	NewReader(src)
+	r := NewReader(src)
 
-	if _, err := io.Copy(dest, src); err != nil {
+	if _, err := io.Copy(dest, r); err != nil {
 		t.Error(err.Error())
 	}
 
-	fmt.Println(string(dest.Bytes()))
+	expected := "hello world"
+	actual := string(dest.Bytes())
+	if expected != actual {
+		t.Errorf("Expected: %s, got: %s", expected, actual)
+	}
 }
 
 func write_test_data(w *bytes.Buffer) {
-	binary.Write(w, binary.BigEndian, BeginData)
+	binary.Write(w, binary.BigEndian, Begin)
 	binary.Write(w, binary.BigEndian, Data)
 
-	data := []byte("hello world\n")
+	data := []byte("hello world")
 	l := int64(len(data))
 
 	binary.Write(w, binary.BigEndian, l)
 	binary.Write(w, binary.BigEndian, data)
-	binary.Write(w, binary.BigEndian, EndData)
+	binary.Write(w, binary.BigEndian, End)
 }
