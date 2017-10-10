@@ -22,14 +22,14 @@ func main() {
 		panic(err)
 	}
 
-	binary.Write(conn, binary.BigEndian, proto.BeginData)
+	binary.Write(conn, binary.BigEndian, proto.Begin)
 
 	w := proto.NewWriter(conn)
 	io.Copy(w, f)
 
-	println("after copy")
-	binary.Write(conn, binary.BigEndian, proto.EndData)
+	binary.Write(conn, binary.BigEndian, proto.End)
 
+	println("alfter")
 	var res proto.FrameType
 	binary.Read(conn, binary.BigEndian, &res)
 	println("ok")

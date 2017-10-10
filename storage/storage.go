@@ -23,6 +23,7 @@ func Save(r io.Reader, w io.Writer) error {
 
 	_, err = io.Copy(file, fr)
 
+	println("lala copy")
 	binary.Write(w, binary.BigEndian, proto.Ok)
 	return err
 }
